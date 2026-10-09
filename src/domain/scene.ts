@@ -1,4 +1,4 @@
-import { bloomDensity, creatureCounts, GARDEN_ITEMS, growthOf, isUnlocked, stageOf, type Stage } from './growth';
+import { bloomDensity, creatureCounts, GARDEN_ITEMS, getItem, growthOf, isUnlocked, stageOf, type Stage } from './growth';
 import { hashSeed, rng } from './suggest';
 import type { DayTask } from './types';
 
@@ -106,4 +106,36 @@ export function describeScene(state: SceneState, gardenName: string): string {
   parts.push(mature > 0 ? `${mature} món đã trưởng thành` : 'khu vườn vừa bắt đầu');
   if (growing.length > 0) parts.push(`đang lớn: ${growing.join(', ')}`);
   return `${parts.join('. ')}.`;
+}
+
+export const ANIMATION_BUDGET = 70;
+
+const SWAYERS = new Set(['sprout', 'grass', 'daisy', 'tulip', 'sunflower', 'apple-tree', 'cherry-tree']);
+const GRASS_SWAYING = 4; // chỉ bốn cụm cỏ đầu tiên đung đưa
+
+/**
+ * Ước lượng số phần tử có thể đang chạy animation cùng lúc ở chế độ đầy đủ.
+ * Phản chiếu các quy tắc trong garden.css (cỏ tiền cảnh chỉ nửa số ngọn đung đưa,
+ * chỉ 8 ngôi sao nhấp nháy, sao tắt ban ngày, đom đóm/bướm/chim đã được sceneState lọc).
+ */
+export function estimateAnimated(state: SceneState): number {
+  if (state.calm) return 0;
+  const sway = state.items
+    .filter((i) => SWAYERS.has(i.id))
+    .reduce((n, i) => {
+      const slots = getItem(i.id)?.slots.length ?? 0;
+      return n + (i.id === 'grass' ? Math.min(GRASS_SWAYING, slots) : slots);
+    }, 0);
+  const clouds = state.weather === 'clear' ? 3 : 6;
+  const butterflies = (state.creatures.butterflies + state.extraButterflies) * 2; // thân + cánh
+  const stars = state.phase === 'day' ? 0 : 8;
+  const rain = state.weather === 'rain' ? 28 : 0;
+  const mist = state.weather === 'mist' ? 3 : 0;
+  const sun = state.sky.body === 'sun' ? 1 : 0;
+  const rays = state.sky.body === 'sun' && state.weather !== 'rain' ? 1 : 0;
+  const halo = state.items.some((i) => i.id === 'lantern') ? 1 : 0;
+  return (
+    clouds + sway + 7 + butterflies + state.creatures.birds + state.creatures.fish +
+    state.creatures.fireflies + stars + rain + mist + sun + rays + halo
+  );
 }

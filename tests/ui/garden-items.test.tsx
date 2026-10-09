@@ -26,6 +26,12 @@ describe('ElementsLayer', () => {
     expect(count(container, 'sprout')).toBe(1);
     expect(count(container, 'daisy')).toBe(0);
   });
+  it('only the first four grass tufts sway, to stay inside the animation budget', () => {
+    const { container } = render(<GardenScene state={make(0)} name="v" />);
+    const tufts = [...container.querySelectorAll('[data-item="grass"]')];
+    expect(tufts.length).toBeGreaterThan(4);
+    expect(tufts.filter((t) => t.querySelector('.sway')).length).toBe(4);
+  });
   it('adds items as points grow', () => {
     const { container } = render(<GardenScene state={make(45)} name="v" />);
     expect(count(container, 'daisy')).toBe(3);

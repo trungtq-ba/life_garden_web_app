@@ -28,7 +28,7 @@ export function ElementsLayer({ state, tick = 0, justUnlocked = [] }: { state: S
               {art.shadow > 0 && <ellipse className="shadow" cx="0" cy="2" rx={art.shadow} ry={art.shadow * 0.28} fill="url(#shadow)" />}
               <g className="grow" style={{ transform: `scale(${k})` }}>
                 <g className={`nudge${justUnlocked.includes(id) ? ' unlock-pop' : ''}`}>
-                  <art.Art growth={growth} seed={i + slot.x} fish={id === 'pond' ? state.creatures.fish : 0} />
+                  <art.Art growth={growth} seed={i + slot.x} fish={id === 'pond' ? state.creatures.fish : 0} still={id === 'grass' && i >= 4} />
                 </g>
                 {justUnlocked.includes(id) && <ellipse className="unlock-ring" cx="0" cy="0" rx="46" ry="14" fill="none" stroke="#ffe680" strokeWidth="3" />}
               </g>

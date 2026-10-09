@@ -43,6 +43,9 @@ describe('CSS motion rules', () => {
     expect(css).toMatch(/\.calm\s+\*[^{]*\{[^}]*animation:\s*none/);
     expect(css).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   });
+  it('does not animate decoration that is hidden', () => {
+    expect(css).toMatch(/\.weather-clear\s+\.cloud-extra\s*\{[^}]*animation:\s*none/);
+  });
   it('pauses everything when the scene is paused', () => {
     expect(css).toMatch(/\[data-paused='true'\]\s+\*[^{]*\{[^}]*animation-play-state:\s*paused/);
   });

@@ -4,6 +4,7 @@ export interface ArtProps {
   growth: number;
   seed: number;
   fish?: number;
+  still?: boolean; // không đung đưa (tiết kiệm chuyển động)
 }
 
 const sway = (seed: number, amp = 1.5): CSSProperties =>
@@ -12,9 +13,9 @@ const sway = (seed: number, amp = 1.5): CSSProperties =>
 const PETALS10 = Array.from({ length: 10 }, (_, i) => i * 36);
 const PETALS14 = Array.from({ length: 14 }, (_, i) => (i * 360) / 14);
 
-export function Grass({ seed }: ArtProps) {
+export function Grass({ seed, still }: ArtProps) {
   return (
-    <g className="sway" style={sway(seed)}>
+    <g className={still ? undefined : 'sway'} style={sway(seed)}>
       <path d="M-18 0 Q-16 -24 -8 -38 Q-8 -18 -4 0Z" fill="url(#leaf)" />
       <path d="M-6 0 Q-4 -30 2 -46 Q6 -22 6 0Z" fill="url(#leaf-dark)" />
       <path d="M4 0 Q8 -22 18 -34 Q14 -16 12 0Z" fill="url(#leaf)" />

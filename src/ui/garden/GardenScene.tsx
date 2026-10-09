@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import { describeScene, type SceneState } from '../../domain/scene';
 import { Defs } from './Defs';
 import { CloudsLayer, SkyLayer } from './layers/SkyLayer';
@@ -9,6 +9,7 @@ import { LightLayer } from './layers/LightLayer';
 import { RainbowLayer } from './layers/RainbowLayer';
 import { WaterBurst } from './layers/WaterBurst';
 import { WeatherLayer } from './layers/WeatherLayer';
+import { parallaxVector } from './parallax';
 import { useAmbientPause } from './useAmbientPause';
 import './garden.css';
 
@@ -23,6 +24,32 @@ interface Props {
 export function GardenScene({ state, name, wateredTick = 0, justUnlocked = [], size }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const paused = useAmbientPause(ref);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    node.querySelectorAll<SVGElement>('[data-depth]').forEach((el) => {
+      el.style.setProperty('--depth', el.dataset.depth ?? '0');
+    });
+    if (state.calm) return;
+    const set = (x: number, y: number) => {
+      node.dataset.px = String(x);
+      node.dataset.py = String(y);
+      node.style.setProperty('--px', String(x));
+      node.style.setProperty('--py', String(y));
+    };
+    const onMove = (e: MouseEvent) => {
+      const v = parallaxVector(e.clientX, e.clientY, node.getBoundingClientRect());
+      set(v.x, v.y);
+    };
+    const onLeave = () => set(0, 0);
+    node.addEventListener('mousemove', onMove);
+    node.addEventListener('mouseleave', onLeave);
+    return () => {
+      node.removeEventListener('mousemove', onMove);
+      node.removeEventListener('mouseleave', onLeave);
+    };
+  }, [state.calm]);
   const cls = ['garden-scene', `phase-${state.phase}`, `weather-${state.weather}`, state.calm ? 'calm' : '', size ?? '']
     .filter(Boolean)
     .join(' ');

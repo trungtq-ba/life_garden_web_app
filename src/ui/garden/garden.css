@@ -159,3 +159,20 @@
 .garden-scene.compact { aspect-ratio: 16 / 10; max-height: 340px; }
 .garden-scene.large { aspect-ratio: 6 / 5; max-height: 62vh; min-height: 280px; }
 .hero { cursor: pointer; }
+
+/* ----- Chiều sâu: parallax theo chuột (chỉ transform) ----- */
+.garden-scene .layer[data-depth] {
+  transform: translate(calc(var(--px, 0) * var(--depth, 0) * -10px), calc(var(--py, 0) * var(--depth, 0) * -5px));
+  transition: transform 0.25s ease-out;
+}
+.calm .layer[data-depth] { transform: none; transition: none; }
+
+/* ----- Khớp ngân sách chuyển động (xem estimateAnimated) ----- */
+.fg-blade:nth-child(even) { animation: none; }
+.star:nth-child(n + 9) { animation: none; }
+.phase-day .star { animation: none; }
+.phase-day .firefly, .phase-dawn .firefly { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .garden-scene .layer[data-depth] { transform: none !important; transition: none !important; }
+}
+.weather-clear .cloud-extra { animation: none; }
