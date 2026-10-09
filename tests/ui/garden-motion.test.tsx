@@ -43,6 +43,9 @@ describe('CSS motion rules', () => {
     expect(css).toMatch(/\.calm\s+\*[^{]*\{[^}]*animation:\s*none/);
     expect(css).toMatch(/@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   });
+  it('keeps birds at a resting position when animation is off', () => {
+    expect(css).toMatch(/\.bird\s*\{[^}]*transform:\s*translateX\(var\(--x0/);
+  });
   it('does not animate decoration that is hidden', () => {
     expect(css).toMatch(/\.weather-clear\s+\.cloud-extra\s*\{[^}]*animation:\s*none/);
   });

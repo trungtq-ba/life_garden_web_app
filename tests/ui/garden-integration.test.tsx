@@ -53,6 +53,20 @@ describe('Today hero', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Hoàn thành: Đi bộ' }));
     expect(container.querySelectorAll('.water-burst .drop')).toHaveLength(5);
   });
+  it('does not replay the watering when the scene is mounted again later', () => {
+    seed([mk('a', 'Đi bộ')]);
+    useStore.setState({ wateredTick: 3 });
+    const { container } = render(<Today date={D} onOpenGarden={() => {}} />);
+    expect(container.querySelector('.water-burst')).toBeNull();
+    expect(container.querySelector('.layer-elements')!.getAttribute('class')).not.toMatch(/pulse-/);
+  });
+  it('still waters on a completion after mounting with an old tick', async () => {
+    seed([mk('a', 'Đi bộ')]);
+    useStore.setState({ wateredTick: 3 });
+    const { container } = render(<Today date={D} onOpenGarden={() => {}} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Hoàn thành: Đi bộ' }));
+    expect(container.querySelectorAll('.water-burst .drop')).toHaveLength(5);
+  });
   it('raises a rainbow when every task is done', async () => {
     seed([mk('a', 'Đi bộ'), mk('b', 'Giãn cơ')]);
     const { container } = render(<Today date={D} onOpenGarden={() => {}} />);

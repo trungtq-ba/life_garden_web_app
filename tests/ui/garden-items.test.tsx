@@ -75,6 +75,16 @@ describe('CreaturesLayer', () => {
     expect(container.querySelectorAll('.bird')).toHaveLength(0);
     expect(container.querySelectorAll('.firefly')).toHaveLength(6);
   });
+  it('gives each bird its own resting x so calm mode still shows them inside the frame', () => {
+    const { container } = render(<GardenScene state={make(190)} name="v" />);
+    const xs = [...container.querySelectorAll('.bird')].map((n) => Number(n.getAttribute('data-x0')));
+    expect(xs).toHaveLength(3);
+    expect(new Set(xs).size).toBe(3);
+    xs.forEach((x) => {
+      expect(x).toBeGreaterThanOrEqual(150);
+      expect(x).toBeLessThanOrEqual(850);
+    });
+  });
   it('lets the wildlife rest on a rainy day', () => {
     const { container } = render(<GardenScene state={make(100, { dateKey: '2026-10-09' })} name="v" />);
     expect(container.querySelectorAll('.butterfly')).toHaveLength(0);

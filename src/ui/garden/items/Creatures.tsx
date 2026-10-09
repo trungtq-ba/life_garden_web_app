@@ -9,6 +9,7 @@ const BUTTERFLY_PATHS = [
   { x: 390, y: 330, dx: [-60, 30, 80], dy: [-20, -50, -10] },
 ];
 const BIRD_ROWS = [150, 110, 190];
+const BIRD_X0 = [220, 520, 790]; // vị trí nghỉ khi không có chuyển động
 const FIREFLIES = [
   { x: 220, y: 420 }, { x: 420, y: 470 }, { x: 640, y: 430 },
   { x: 820, y: 410 }, { x: 330, y: 380 }, { x: 740, y: 500 },
@@ -38,9 +39,10 @@ export function Butterfly({ index, hue }: { index: number; hue: number }) {
 }
 
 export function Bird({ index }: { index: number }) {
+  const x0 = BIRD_X0[index % BIRD_X0.length];
   return (
     <g transform={`translate(0 ${BIRD_ROWS[index % BIRD_ROWS.length]})`}>
-      <g className="bird" style={V({ '--delay': `${-index * 11}s`, '--dur': `${32 + index * 6}s` })}>
+      <g className="bird" data-x0={x0} style={V({ '--x0': `${x0}px`, '--delay': `${-index * 11}s`, '--dur': `${32 + index * 6}s` })}>
         <path d="M-10 0 Q-5 -7 0 0 Q5 -7 10 0" stroke="#34495e" strokeWidth="2" fill="none" strokeLinecap="round" />
       </g>
     </g>

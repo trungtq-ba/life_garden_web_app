@@ -107,7 +107,7 @@
 .cloud-drift { animation: drift var(--dur, 110s) linear infinite; animation-delay: var(--delay, 0s); }
 .butterfly { animation: flutter 16s ease-in-out infinite; animation-delay: var(--delay, 0s); }
 .wings { transform-origin: 0 0; animation: flap 0.35s ease-in-out infinite alternate; }
-.bird { animation: fly var(--dur, 34s) linear infinite; animation-delay: var(--delay, 0s); }
+.bird { transform: translateX(var(--x0, 220px)); animation: fly var(--dur, 34s) linear infinite; animation-delay: var(--delay, 0s); }
 .fish { animation: circle var(--dur, 12s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
 .firefly { animation: glow 5s ease-in-out infinite; animation-delay: var(--delay, 0s); }
 .raindrop { animation: rain var(--dur, 1.1s) linear infinite; animation-delay: var(--delay, 0s); }
