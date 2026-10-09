@@ -8,6 +8,8 @@ export function Preview() {
   const [weather, setWeather] = useState<Weather | 'auto'>('auto');
   const [ratio, setRatio] = useState(0);
   const [effects, setEffects] = useState<Effects>('full');
+  const [tick, setTick] = useState(0);
+  const [unlocked, setUnlocked] = useState('');
 
   const base = sceneState({
     peakPoints: peak,
@@ -46,8 +48,17 @@ export function Preview() {
             <option value="calm">Nhẹ</option>
           </select>
         </label>
+        <label>Vừa mở khóa (id, cách nhau dấu phẩy)
+          <input value={unlocked} onChange={(e) => setUnlocked(e.target.value)} />
+        </label>
+        <button type="button" onClick={() => setTick((t) => t + 1)}>Tưới</button>
       </div>
-      <GardenScene state={state} name="Xem thử" />
+      <GardenScene
+        state={state}
+        name="Xem thử"
+        wateredTick={tick}
+        justUnlocked={unlocked.split(',').map((x) => x.trim()).filter(Boolean)}
+      />
     </main>
   );
 }

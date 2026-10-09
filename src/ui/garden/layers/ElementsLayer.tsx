@@ -8,7 +8,7 @@ export function depthScale(y: number): number {
   return 0.7 + 0.6 * t;
 }
 
-export function ElementsLayer({ state }: { state: SceneState }) {
+export function ElementsLayer({ state, tick = 0, justUnlocked = [] }: { state: SceneState; tick?: number; justUnlocked?: string[] }) {
   const instances = state.items
     .flatMap((si) => {
       const def = getItem(si.id);
@@ -19,7 +19,7 @@ export function ElementsLayer({ state }: { state: SceneState }) {
     .sort((a, b) => a.slot.y - b.slot.y);
 
   return (
-    <g className="layer layer-elements" data-depth="1">
+    <g className={`layer layer-elements${tick > 0 ? (tick % 2 === 1 ? ' pulse-b' : ' pulse-a') : ''}`} data-depth="1">
       {instances.map(({ key, id, slot, growth, i, art }) => {
         const k = art.min + (1 - art.min) * growth;
         return (
@@ -27,7 +27,10 @@ export function ElementsLayer({ state }: { state: SceneState }) {
             <g transform={`scale(${depthScale(slot.y)})`}>
               {art.shadow > 0 && <ellipse className="shadow" cx="0" cy="2" rx={art.shadow} ry={art.shadow * 0.28} fill="url(#shadow)" />}
               <g className="grow" style={{ transform: `scale(${k})` }}>
-                <art.Art growth={growth} seed={i + slot.x} fish={id === 'pond' ? state.creatures.fish : 0} />
+                <g className={`nudge${justUnlocked.includes(id) ? ' unlock-pop' : ''}`}>
+                  <art.Art growth={growth} seed={i + slot.x} fish={id === 'pond' ? state.creatures.fish : 0} />
+                </g>
+                {justUnlocked.includes(id) && <ellipse className="unlock-ring" cx="0" cy="0" rx="46" ry="14" fill="none" stroke="#ffe680" strokeWidth="3" />}
               </g>
             </g>
           </g>

@@ -7,6 +7,7 @@ import { ForegroundLayer } from './layers/ForegroundLayer';
 import { GroundLayer, HillsLayer, TintLayer } from './layers/LandLayer';
 import { LightLayer } from './layers/LightLayer';
 import { RainbowLayer } from './layers/RainbowLayer';
+import { WaterBurst } from './layers/WaterBurst';
 import { WeatherLayer } from './layers/WeatherLayer';
 import { useAmbientPause } from './useAmbientPause';
 import './garden.css';
@@ -15,9 +16,10 @@ interface Props {
   state: SceneState;
   name: string;
   wateredTick?: number;
+  justUnlocked?: string[];
 }
 
-export function GardenScene({ state, name }: Props) {
+export function GardenScene({ state, name, wateredTick = 0, justUnlocked = [] }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const paused = useAmbientPause(ref);
   const cls = ['garden-scene', `phase-${state.phase}`, `weather-${state.weather}`, state.calm ? 'calm' : ''].join(' ').trim();
@@ -38,10 +40,11 @@ export function GardenScene({ state, name }: Props) {
         <RainbowLayer state={state} />
         <HillsLayer />
         <GroundLayer />
-        <ElementsLayer state={state} />
+        <ElementsLayer state={state} tick={state.calm ? 0 : wateredTick} justUnlocked={state.calm ? [] : justUnlocked} />
         <CreaturesLayer state={state} />
         <WeatherLayer state={state} />
         <ForegroundLayer state={state} />
+        {wateredTick > 0 && !state.calm && <WaterBurst key={wateredTick} tick={wateredTick} />}
         <TintLayer />
         <LightLayer state={state} />
       </svg>

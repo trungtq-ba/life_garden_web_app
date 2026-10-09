@@ -123,3 +123,36 @@
 }
 /* Tạm dừng khi tab ẩn hoặc cảnh ngoài khung nhìn */
 .garden-scene[data-paused='true'] * { animation-play-state: paused !important; }
+
+/* ----- Phản ứng một lần ----- */
+@keyframes nudge-a {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes nudge-b {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes drop {
+  0% { opacity: 0; transform: translate(0, 0); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx, 0), 190px); }
+}
+@keyframes pop {
+  0% { transform: scale(0.2); opacity: 0; }
+  60% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes ring {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.8); }
+}
+.nudge { transform-origin: 0 0; }
+.pulse-a .nudge { animation: nudge-a 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pulse-b .nudge { animation: nudge-b 0.42s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.drop { animation: drop 0.9s ease-in forwards; animation-delay: var(--delay, 0s); opacity: 0; }
+.nudge.unlock-pop { animation: pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.pulse-a .nudge.unlock-pop, .pulse-b .nudge.unlock-pop { animation: pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.unlock-ring { transform-origin: 0 0; animation: ring 1s ease-out both; }
