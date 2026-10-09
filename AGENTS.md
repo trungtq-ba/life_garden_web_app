@@ -24,14 +24,14 @@ Chỉ lưu trên trình duyệt (localStorage). Không tài khoản, không serv
 
 | Lệnh | Việc |
 |---|---|
-| `npm install` | Cài phụ thuộc |
-| `npm run dev` | Chạy dev server (cổng 5173) |
-| `npm test` | Vitest (unit + UI), chạy một lần |
-| `npx vitest run <đường dẫn>` | Chạy một file test |
-| `npm run build` | `tsc --noEmit` rồi build production + PWA |
-| `npm run e2e` | Playwright (tự bật dev server). Lần đầu: `npx playwright install chromium` |
+| `pnpm install` | Cài phụ thuộc |
+| `pnpm dev` | Chạy dev server (cổng 5173) |
+| `pnpm test` | Vitest (unit + UI), chạy một lần |
+| `pnpm exec vitest run <đường dẫn>` | Chạy một file test |
+| `pnpm build` | `tsc --noEmit` rồi build production + PWA |
+| `pnpm e2e` | Playwright (tự bật dev server). Lần đầu: `pnpm exec playwright install chromium` |
 
-Trước khi coi một thay đổi là xong: `npm test`, `npm run build`, và `npm run e2e` nếu đụng tới luồng người dùng.
+Trước khi coi một thay đổi là xong: `pnpm test`, `pnpm build`, và `pnpm e2e` nếu đụng tới luồng người dùng.
 
 ## 4. Kiến trúc
 
@@ -96,7 +96,7 @@ e2e/               # Playwright
 - Tên truy cập hiện có là hợp đồng với test: `Hoàn thành: {title}`, `Đổi: {title}`, `Bỏ qua: {title}`, `Ô {n}` / `Ô {n}: {tên món}`, `Đặt {tên món}`.
 
 - Chuyển động chỉ dùng `transform`/`opacity`; keyframes mới phải qua test `garden-motion`. Thêm phần tử chuyển động thì cập nhật `estimateAnimated` và giữ ≤ `ANIMATION_BUDGET` (70).
-- Test cảnh dùng `dateKey: '2026-10-07'` (ngày nắng) làm mặc định; `2026-10-09` là ngày mưa. Trang xem thử khu vườn: `npm run dev` rồi mở `/?preview=garden` (chỉ dev).
+- Test cảnh dùng `dateKey: '2026-10-07'` (ngày nắng) làm mặc định; `2026-10-09` là ngày mưa. Trang xem thử khu vườn: `pnpm dev` rồi mở `/?preview=garden` (chỉ dev).
 - `prefers-reduced-motion` của hệ điều hành luôn ép chế độ Nhẹ; không để cài đặt người dùng ghi đè.
 
 ## 8. Giới hạn đã biết (chưa làm)

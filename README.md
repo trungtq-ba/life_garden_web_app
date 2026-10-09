@@ -21,19 +21,19 @@ Mọi dữ liệu nằm trong trình duyệt trên thiết bị của bạn. Kh�
 Cần Node.js 18 trở lên.
 
 ```bash
-npm install
-npm run dev        # mở http://localhost:5173
+pnpm install
+pnpm dev        # mở http://localhost:5173
 ```
 
 ## Các lệnh
 
 | Lệnh | Việc |
 |---|---|
-| `npm run dev` | Chạy dev server |
-| `npm test` | Chạy unit và UI test (Vitest) |
-| `npm run build` | Kiểm tra type, build production và PWA |
-| `npm run preview` | Xem bản build |
-| `npm run e2e` | Test đầu-cuối (Playwright; lần đầu chạy `npx playwright install chromium`) |
+| `pnpm dev` | Chạy dev server |
+| `pnpm test` | Chạy unit và UI test (Vitest) |
+| `pnpm build` | Kiểm tra type, build production và PWA |
+| `pnpm preview` | Xem bản build |
+| `pnpm e2e` | Test đầu-cuối (Playwright; lần đầu chạy `pnpm exec playwright install chromium`) |
 
 ## Công nghệ
 
