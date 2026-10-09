@@ -1,0 +1,32 @@
+:root {
+  --bg: #f6faf4; --fg: #1b2a1b; --card: #fff; --accent: #2e7d32; --muted: #5f6f5f; --line: #d6e3d3;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #121a12; --fg: #e6efe4; --card: #1c271c; --accent: #66bb6a; --muted: #9fb09c; --line: #2c3a2c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+.shell { min-height: 100vh; padding-bottom: 64px; }
+.page { max-width: 640px; margin: 0 auto; padding: 16px; }
+.stack { display: grid; gap: 12px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+label { display: grid; gap: 4px; }
+label.inline { display: inline-flex; align-items: center; gap: 6px; margin-right: 12px; }
+input, select, button { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+button { cursor: pointer; min-height: 40px; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin: 8px 0; }
+.note { color: var(--muted); font-size: 14px; }
+.tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--card); border-top: 1px solid var(--line); }
+.tabs button { flex: 1; border: 0; border-radius: 0; background: transparent; }
+.tabs button[aria-current='page'] { color: var(--accent); font-weight: 600; }
+.banner, .toast { margin: 0; padding: 8px 16px; background: var(--accent); color: #fff; text-align: center; }
+progress { width: 100%; }
+.task { display: grid; gap: 8px; }
+.task.done .title { text-decoration: line-through; color: var(--muted); }
+.grid { display: grid; gap: 4px; }
+.cell { aspect-ratio: 1; padding: 0; display: grid; place-items: center; min-height: 0; }
+.cell[aria-pressed='true'] { outline: 3px solid var(--accent); }
+.bar { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+.bar > div { flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-height: 2px; }
