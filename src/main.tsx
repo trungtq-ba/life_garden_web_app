@@ -21,8 +21,13 @@ useStore.subscribe((s, p) => {
   if (s.data.settings !== p.data.settings) reminders.rearm();
 });
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+const root = createRoot(document.getElementById('root')!);
+if (import.meta.env.DEV && new URLSearchParams(location.search).get('preview') === 'garden') {
+  import('./ui/garden/Preview').then(({ Preview }) => root.render(<Preview />));
+} else {
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}

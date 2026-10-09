@@ -1,0 +1,35 @@
+.garden-scene {
+  --cloud: #ffffff;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #cfe9f7;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 8px 24px rgba(20, 60, 40, 0.18);
+}
+.garden-scene svg { display: block; width: 100%; height: 100%; }
+.weather-cloudy { --cloud: #f1f4f8; }
+.weather-rain { --cloud: #cfd8e3; }
+.weather-mist { --cloud: #f6f8fa; }
+.cloud { fill: var(--cloud); opacity: 0.92; }
+.cloud-extra { opacity: 0; }
+.weather-cloudy .cloud-extra, .weather-rain .cloud-extra, .weather-mist .cloud-extra { opacity: 1; }
+
+.sky { opacity: 0; transition: opacity 3s ease; }
+.sky[data-active='true'] { opacity: 1; }
+.stars { opacity: 0; transition: opacity 3s ease; }
+.phase-night .stars { opacity: 1; }
+.phase-dusk .stars { opacity: 0.35; }
+.phase-dawn .stars { opacity: 0.2; }
+.phase-day .stars { opacity: 0; }
+
+.tint { opacity: 0; transition: opacity 3s ease; }
+.phase-dawn .tint-dawn { opacity: 0.1; }
+.phase-dusk .tint-dusk { opacity: 0.16; }
+.phase-night .tint-night { opacity: 0.42; }
+
+.calm .sky, .calm .stars, .calm .tint { transition-duration: 150ms; }
+
+.garden-preview { max-width: 900px; margin: 0 auto; padding: 16px; display: grid; gap: 12px; }
+.garden-preview .controls { display: flex; flex-wrap: wrap; gap: 12px; }
