@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { dateKey } from '../domain/date';
 import { canPlace, moveItem as moveInGarden, placeItem as placeInGarden, removeAt } from '../domain/garden';
 import { syncGarden } from '../domain/scoring';
 import { suggestTasks, swapTask } from '../domain/suggest';
@@ -16,7 +17,7 @@ interface State {
   ensureDay(date: string): void;
   toggleDone(date: string, taskId: string): void;
   skipTask(date: string, taskId: string): void;
-  swap(date: string, taskId: string): void;
+  swap(date: string, taskId: string): boolean;
   addCustomTask(date: string, input: { title: string; minutes: number; habit: Habit }): boolean;
   placeItem(itemId: string, cell: number): string | null;
   removeItem(cell: number): void;
@@ -79,9 +80,12 @@ export const useStore = create<State>()((set, get) => {
         t.status === 'pending' ? { ...t, status: 'skipped' }
         : t.status === 'skipped' ? { ...t, status: 'pending' }
         : t),
-    swap: (date, id) =>
+    swap: (date, id) => {
+      const before = get().data.days[date];
       patchDay(date, (tasks, data) =>
-        swapTask(tasks, id, { profile: data.profile, settings: data.settings, date })),
+        swapTask(tasks, id, { profile: data.profile, settings: data.settings, date }));
+      return get().data.days[date] !== before;
+    },
 
     addCustomTask: (date, { title, minutes, habit }) => {
       const name = title.trim();
@@ -130,6 +134,7 @@ export const useStore = create<State>()((set, get) => {
     importText: (text) => {
       try {
         set({ data: syncGarden(parseData(text)), storageStatus: 'ok' });
+        get().ensureDay(dateKey(new Date()));
         return { ok: true };
       } catch {
         return { ok: false, error: 'Tệp không hợp lệ nên chưa thay đổi gì.' };

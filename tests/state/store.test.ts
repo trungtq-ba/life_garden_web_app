@@ -1,3 +1,4 @@
+import { dateKey } from '../../src/domain/date';
 import { DEFAULT_PROFILE } from '../../src/domain/types';
 import { totalPoints } from '../../src/domain/scoring';
 import { emptyData, STORAGE_KEY } from '../../src/state/storage';
@@ -109,6 +110,21 @@ describe('import / export / reset', () => {
     expect(s().data.settings.reminderTime).not.toBe('07:30');
     expect(s().importText(text)).toEqual({ ok: true });
     expect(s().data.settings.reminderTime).toBe('07:30');
+  });
+  it('generates today after importing a backup made on an earlier day', () => {
+    const backup = JSON.stringify({ ...emptyData(), profile: DEFAULT_PROFILE, days: {} });
+    s().resetAll();
+    expect(s().importText(backup)).toEqual({ ok: true });
+    expect(s().data.days[dateKey(new Date())]).toBeDefined();
+  });
+  it('reports whether a swap happened', () => {
+    const water = ['water-1', 'water-2', 'water-3'].map((id, i) => ({
+      id: `${D}-${i}`, templateId: id, habit: 'water' as const, title: id, minutes: 1, points: 1, status: 'pending' as const,
+    }));
+    useStore.setState((st) => ({ data: { ...st.data, days: { ...st.data.days, [D]: water } } }));
+    expect(s().swap(D, water[0].id)).toBe(false);
+    expect(s().data.days[D]).toBe(useStore.getState().data.days[D]);
+    expect(s().data.days[D].every((t) => t.status === 'pending')).toBe(true);
   });
   // Review Focus 4
   it('rejects a bad file without overwriting current data', () => {

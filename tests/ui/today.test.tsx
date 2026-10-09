@@ -69,4 +69,20 @@ describe('Today', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Đến giờ chăm sóc khu vườn');
     vi.useRealTimers();
   });
+
+  it('does not offer Đổi for a skipped task', async () => {
+    render(<Today date={D} onOpenGarden={() => {}} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Bỏ qua: Giãn cơ 5 phút' }));
+    expect(screen.queryByRole('button', { name: 'Đổi: Giãn cơ 5 phút' })).not.toBeInTheDocument();
+  });
+
+  it('tells the user when there is no other task to swap to', async () => {
+    const water = ['water-1', 'water-2', 'water-3'].map((id, i) => ({
+      ...mk(`w${i}`, `Nước ${i}`), templateId: id, habit: 'water' as const,
+    }));
+    useStore.setState((st) => ({ data: { ...st.data, days: { [D]: water } } }));
+    render(<Today date={D} onOpenGarden={() => {}} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Đổi: Nước 0' }));
+    expect(screen.getByText('Chưa có nhiệm vụ khác cùng loại để đổi.')).toBeInTheDocument();
+  });
 });

@@ -73,4 +73,16 @@ describe('SettingsScreen', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Tệp không hợp lệ');
     expect(useStore.getState().data.profile).not.toBeNull();
   });
+
+  it('refreshes the form after a successful import so saving cannot revert it', async () => {
+    useStore.setState((st) => ({ data: { ...st.data, profile: { ...DEFAULT_PROFILE, weightKg: 50 } } }));
+    render(<SettingsScreen />);
+    expect(screen.getByLabelText('Cân nặng (kg)')).toHaveValue(50);
+    const backup = JSON.stringify({ ...emptyData(), profile: { ...DEFAULT_PROFILE, weightKg: 90 } });
+    await userEvent.upload(screen.getByLabelText('Nhập dữ liệu'), new File([backup], 'ok.json', { type: 'application/json' }));
+    expect(await screen.findByText('Đã nhập dữ liệu.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Cân nặng (kg)')).toHaveValue(90);
+    await userEvent.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
+    expect(useStore.getState().data.profile?.weightKg).toBe(90);
+  });
 });

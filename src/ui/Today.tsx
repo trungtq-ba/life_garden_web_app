@@ -17,6 +17,7 @@ export default function Today({ date, onOpenGarden }: { date: string; onOpenGard
   const [minutes, setMinutes] = useState('10');
   const [habit, setHabit] = useState<Habit>('walk');
   const [error, setError] = useState('');
+  const [swapMsg, setSwapMsg] = useState('');
 
   const visible = (tasks ?? []).filter((t) => t.status !== 'swapped');
   const done = visible.filter((t) => t.status === 'done').length;
@@ -52,7 +53,14 @@ export default function Today({ date, onOpenGarden }: { date: string; onOpenGard
               </button>
               {t.status !== 'done' && (
                 <>
-                  <button aria-label={`Đổi: ${t.title}`} onClick={() => swap(date, t.id)}>Đổi</button>
+                  {t.status === 'pending' && (
+                    <button
+                      aria-label={`Đổi: ${t.title}`}
+                      onClick={() => setSwapMsg(swap(date, t.id) ? '' : 'Chưa có nhiệm vụ khác cùng loại để đổi.')}
+                    >
+                      Đổi
+                    </button>
+                  )}
                   <button aria-label={`Bỏ qua: ${t.title}`} onClick={() => skipTask(date, t.id)}>
                     {t.status === 'skipped' ? 'Hoàn tác' : 'Bỏ qua'}
                   </button>
@@ -62,6 +70,8 @@ export default function Today({ date, onOpenGarden }: { date: string; onOpenGard
           </li>
         ))}
       </ul>
+
+      {swapMsg && <p className="note" role="status">{swapMsg}</p>}
 
       <button onClick={onOpenGarden}>Xem khu vườn</button>
 

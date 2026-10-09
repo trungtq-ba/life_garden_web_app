@@ -13,6 +13,7 @@ export default function SettingsScreen() {
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
   const [confirming, setConfirming] = useState(false);
+  const [formVersion, setFormVersion] = useState(0);
 
   const download = () => {
     const url = URL.createObjectURL(new Blob([exportText()], { type: 'application/json' }));
@@ -36,6 +37,7 @@ export default function SettingsScreen() {
       <h1>Hồ sơ và cài đặt</h1>
 
       <ProfileForm
+        key={formVersion}
         initial={{ profile: profile ?? DEFAULT_PROFILE, habits: settings.habits, reminderTime: settings.reminderTime }}
         submitLabel="Lưu thay đổi"
         onSubmit={({ profile: p, habits, reminderTime }) => {
@@ -66,6 +68,10 @@ export default function SettingsScreen() {
               try {
                 const r = importText(await readFileText(file));
                 setError(r.ok ? '' : r.error ?? '');
+                if (r.ok) {
+                  setMsg('Đã nhập dữ liệu.');
+                  setFormVersion((v) => v + 1);
+                }
               } catch {
                 setError('Tệp không hợp lệ nên chưa thay đổi gì.');
               }

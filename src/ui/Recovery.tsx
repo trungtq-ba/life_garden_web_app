@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useStore } from '../state/store';
+import { backupRaw } from '../state/storage';
 import { readFileText } from './readFile';
 
 export default function Recovery() {
   const importText = useStore((s) => s.importText);
   const resetAll = useStore((s) => s.resetAll);
   const [msg, setMsg] = useState('');
+  const [confirming, setConfirming] = useState(false);
   return (
     <main className="page">
       <h1>Không đọc được dữ liệu đã lưu</h1>
@@ -27,7 +29,15 @@ export default function Recovery() {
         />
       </label>
       {msg && <p role="alert">{msg}</p>}
-      <button onClick={resetAll}>Bắt đầu lại</button>
+      {confirming ? (
+        <div className="row">
+          <button onClick={() => { backupRaw(); resetAll(); }}>Xác nhận bắt đầu lại</button>
+          <button onClick={() => setConfirming(false)}>Hủy</button>
+        </div>
+      ) : (
+        <button onClick={() => setConfirming(true)}>Bắt đầu lại</button>
+      )}
+      {confirming && <p className="note">Chúng tôi sẽ giữ một bản sao dữ liệu cũ trên thiết bị trước khi bắt đầu lại.</p>}
     </main>
   );
 }
