@@ -1,6 +1,6 @@
 import { getItem } from '../../../domain/growth';
 import type { SceneState } from '../../../domain/scene';
-import { Bird, Butterfly, Firefly } from '../items/Creatures';
+import { Bird, Butterfly } from '../items/Creatures';
 import { ITEM_ART } from '../items';
 
 export function depthScale(y: number): number {
@@ -43,7 +43,6 @@ export function CreaturesLayer({ state }: { state: SceneState }) {
     <g className="layer layer-creatures" data-depth="1.1">
       {Array.from({ length: state.creatures.birds }, (_, i) => <Bird key={`b${i}`} index={i} />)}
       {Array.from({ length: butterflies }, (_, i) => <Butterfly key={`f${i}`} index={i} hue={[330, 45, 200, 280][i % 4]} />)}
-      {Array.from({ length: state.creatures.fireflies }, (_, i) => <Firefly key={`y${i}`} index={i} />)}
     </g>
   );
 }

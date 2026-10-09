@@ -28,7 +28,6 @@ export function Lantern() {
   return (
     <g>
       <rect x="-2" y="-64" width="4" height="64" rx="2" fill="#616161" />
-      <circle className="lantern-glow" cy="-72" r="46" fill="url(#sun-glow)" />
       <rect x="-9" y="-86" width="18" height="22" rx="4" fill="#ffd45e" />
       <rect x="-11" y="-90" width="22" height="5" rx="2" fill="#424242" />
       <rect x="-11" y="-66" width="22" height="4" rx="2" fill="#424242" />

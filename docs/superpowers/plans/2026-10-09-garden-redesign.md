@@ -2102,7 +2102,7 @@ import { sceneState, type Weather } from '../../src/domain/scene';
 import { GardenScene } from '../../src/ui/garden/GardenScene';
 
 const make = (over: Partial<Parameters<typeof sceneState>[0]> = {}, weather?: Weather) => {
-  const s = sceneState({ peakPoints: 0, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-09', effects: 'full', ...over });
+  const s = sceneState({ peakPoints: 0, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-07', effects: 'full', ...over });
   return weather ? { ...s, weather } : s;
 };
 const q = (c: HTMLElement, sel: string) => c.querySelectorAll(sel).length;
@@ -2388,7 +2388,7 @@ import { GardenScene } from '../../src/ui/garden/GardenScene';
 import { useSceneClock } from '../../src/ui/garden/useSceneClock';
 
 const make = () =>
-  sceneState({ peakPoints: 100, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-09', effects: 'full' });
+  sceneState({ peakPoints: 100, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-07', effects: 'full' });
 
 function keyframeBlocks(source: string): { name: string; body: string }[] {
   const out: { name: string; body: string }[] = [];
@@ -2690,7 +2690,7 @@ import css from '../../src/ui/garden/garden.css?raw';
 import { GardenScene } from '../../src/ui/garden/GardenScene';
 
 const make = (over: Partial<Parameters<typeof sceneState>[0]> = {}) =>
-  sceneState({ peakPoints: 50, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-09', effects: 'full', ...over });
+  sceneState({ peakPoints: 50, todayRatio: 0, now: new Date(2026, 9, 9, 10), dateKey: '2026-10-07', effects: 'full', ...over });
 
 describe('watering burst', () => {
   it('does nothing before the first completed task', () => {

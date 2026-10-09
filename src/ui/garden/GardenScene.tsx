@@ -3,7 +3,11 @@ import { describeScene, type SceneState } from '../../domain/scene';
 import { Defs } from './Defs';
 import { CloudsLayer, SkyLayer } from './layers/SkyLayer';
 import { CreaturesLayer, ElementsLayer } from './layers/ElementsLayer';
+import { ForegroundLayer } from './layers/ForegroundLayer';
 import { GroundLayer, HillsLayer, TintLayer } from './layers/LandLayer';
+import { LightLayer } from './layers/LightLayer';
+import { RainbowLayer } from './layers/RainbowLayer';
+import { WeatherLayer } from './layers/WeatherLayer';
 import './garden.css';
 
 interface Props {
@@ -26,11 +30,15 @@ export function GardenScene({ state, name }: Props) {
         <Defs />
         <SkyLayer state={state} />
         <CloudsLayer />
+        <RainbowLayer state={state} />
         <HillsLayer />
         <GroundLayer />
         <ElementsLayer state={state} />
         <CreaturesLayer state={state} />
+        <WeatherLayer state={state} />
+        <ForegroundLayer state={state} />
         <TintLayer />
+        <LightLayer state={state} />
       </svg>
     </div>
   );

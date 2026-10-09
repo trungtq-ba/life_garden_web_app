@@ -35,7 +35,12 @@
 .garden-preview .controls { display: flex; flex-wrap: wrap; gap: 12px; }
 .grow { transform-origin: 0 0; transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
 .calm .grow { transition-duration: 150ms; }
-.lantern-glow { opacity: 0; transition: opacity 3s ease; }
-.phase-dusk .lantern-glow, .phase-night .lantern-glow { opacity: 1; }
 .firefly { opacity: 0; }
 .phase-dusk .firefly, .phase-night .firefly { opacity: 1; }
+.warm { opacity: 0; }
+.phase-dawn .warm, .phase-day .warm, .phase-dusk .warm { opacity: calc(var(--sun, 0.4) * 0.14); }
+.ray { opacity: calc(var(--sun, 0.4) * 0.5); }
+.rainbow { opacity: 0; transition: opacity 1.6s ease; }
+.rainbow[data-visible='true'] { opacity: 0.6; }
+.lantern-halo { opacity: 0; transition: opacity 3s ease; }
+.phase-dusk .lantern-halo, .phase-night .lantern-halo { opacity: 1; }

@@ -38,6 +38,11 @@ export function Defs() {
       <Radial id="moon" pairs={[[0, '#fffdf0'], [1, '#dfe6ee']]} />
       <Radial id="moon-glow" pairs={[[0, '#cfe0ff', 0.5], [1, '#cfe0ff', 0]]} />
       <Radial id="shadow" pairs={[[0, '#0c2d1a', 0.35], [1, '#0c2d1a', 0]]} />
+      <Radial id="mist" pairs={[[0, '#ffffff', 0.55], [1, '#ffffff', 0]]} />
+      <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+        <stop offset="1" stopColor="#ffffff" stopOpacity="0.5" />
+      </linearGradient>
     </defs>
   );
 }
