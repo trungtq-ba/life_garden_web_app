@@ -1,6 +1,6 @@
 # Life Garden – Thiết kế lại khu vườn
 
-Ngày: 2026-10-09 · Trạng thái: chờ duyệt
+Ngày: 2026-10-09 · Trạng thái: đã triển khai
 Thay thế **mục 6 (Khu vườn)** và các phần liên quan của `2026-10-09-life-garden-design.md` (mô hình `garden`, mở khóa theo level, đặt món thủ công). Các phần còn lại của spec gốc giữ nguyên.
 
 ## 1. Mục đích và tiêu chí thành công
@@ -46,7 +46,8 @@ Nhãn giai đoạn để mô tả cho trình đọc màn hình: `growth < 0.25` 
 
 | Món | Loại | unlockAt | growSpan |
 |---|---|---|---|
-| Cỏ xanh | cây | 0 | 10 |
+| Mầm non | cây | 0 | 10 |
+| Cỏ xanh (8 cụm) | cây | 0 | 10 |
 | Hoa cúc | cây | 10 | 15 |
 | Hòn đá | đồ vật | 10 | 0 |
 | Hoa tulip | cây | 25 | 20 |
@@ -63,6 +64,8 @@ Sinh vật (số lượng tăng theo điểm, có trần):
 - Chim: từ 70 điểm, `1 + floor((peak − 70) / 60)`, tối đa 3.
 - Cá trong hồ: từ 100 điểm, 3 con.
 - Đom đóm: từ 100 điểm, chỉ hiện ở pha đêm và hoàng hôn.
+
+**Sinh vật nghỉ ngơi:** bướm và chim chỉ xuất hiện ban ngày không mưa; đom đóm chỉ xuất hiện lúc hoàng hôn và ban đêm không mưa; cá luôn ở trong hồ.
 
 Sau 190 điểm: **mật độ hoa** tăng `floor((peak − 190) / 50)`, tối đa 6 bậc, thêm hoa ở tiền cảnh. Vườn không bao giờ "hết đường".
 
@@ -140,7 +143,7 @@ Chuyển động phản ứng nhanh ở lúc phản hồi và mượt ở lúc k
 
 ## 8. Hiệu năng
 
-- Tối đa khoảng **60** phần tử chuyển động cùng lúc (mưa chỉ trong ngày mưa).
+- Tối đa **70** phần tử chuyển động cùng lúc (`ANIMATION_BUDGET`); mưa chiếm 28 và chỉ có trong ngày mưa; sinh vật nghỉ khi mưa hoặc ban đêm; chỉ bốn cụm cỏ, một nửa ngọn cỏ tiền cảnh và 8 ngôi sao chuyển động. Đã đo trong Chrome: ngày nắng ở 600 điểm có 42 animation chạy; chế độ Nhẹ có 0.
 - Mọi chuyển động nền **tạm dừng** khi tab bị ẩn (`visibilitychange`) hoặc khi cảnh ngoài khung nhìn (IntersectionObserver).
 - Không `will-change` đại trà; chỉ trên vài lớp lớn.
 - Chế độ **Nhẹ**: bỏ vòng lặp nền, bỏ parallax, bỏ mưa; tăng trưởng và pha trời vẫn đúng nhưng chuyển trạng thái chỉ hòa mờ 150 ms.

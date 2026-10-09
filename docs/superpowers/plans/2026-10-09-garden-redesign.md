@@ -3440,7 +3440,7 @@ test('an old v1 save is upgraded without losing the garden level', async ({ page
   });
   await page.goto('/');
   await page.getByRole('button', { name: 'Khu vườn', exact: true }).click();
-  await expect(page.getByDisplayValue('Vườn cũ')).toBeVisible();
+  await expect(page.getByLabel('Tên khu vườn')).toHaveValue('Vườn cũ');
   await expect(page.getByText('Cây táo · mới gieo (0%)')).toBeVisible();
 });
 ```

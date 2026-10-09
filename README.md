@@ -7,7 +7,7 @@ Web app giúp bạn xây thói quen sống khỏe. Mỗi ngày làm vài việc 
 ## Tính năng
 
 - **Hôm nay**: danh sách 3–5 nhiệm vụ vừa sức, theo mục tiêu và thời gian rảnh của bạn. Hoàn thành, đổi, bỏ qua, hoặc tự thêm nhiệm vụ riêng.
-- **Khu vườn**: lưới ô để đặt cây và vật trang trí. Món mới được mở khóa khi điểm tăng, cây lớn dần qua các giai đoạn. Đặt tên và tùy chỉnh vườn.
+- **Khu vườn**: cảnh SVG nhiều lớp tự lớn lên khi bạn hoàn thành nhiệm vụ, có bầu trời theo giờ trong ngày, thời tiết, bướm, chim, hồ cá; không cần đặt gì. Hiệu ứng Đầy đủ hoặc Nhẹ (tự giảm khi hệ thống bật giảm chuyển động).
 - **Tiến độ**: tổng kết tuần, xu hướng theo thói quen, cột mốc và lịch sử, tất cả tính từ lịch sử hoàn thành.
 - **Hồ sơ và cài đặt**: cập nhật thông tin, thói quen, giờ nhắc; xuất, nhập hoặc xóa dữ liệu.
 - **Nhắc nhở nhẹ nhàng** và dùng được **offline** (PWA, cài lên màn hình chính được).
@@ -49,4 +49,5 @@ React · Vite · TypeScript · Zustand · Vitest · Testing Library · Playwrigh
 
 - Nhắc nhở đúng giờ khi app đã đóng hoàn toàn cần Web Push và server, nên chưa có ở bản này.
 - Chưa đồng bộ giữa nhiều thiết bị.
+- Tranh SVG do mã tạo; có thể thay từng món bằng tranh của họa sĩ trong `src/ui/garden/items/`.
 - Danh sách đầy đủ các hạn chế đã biết nằm ở mục 8 của [`AGENTS.md`](AGENTS.md).
