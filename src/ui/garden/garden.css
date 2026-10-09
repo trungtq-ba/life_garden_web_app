@@ -33,3 +33,9 @@
 
 .garden-preview { max-width: 900px; margin: 0 auto; padding: 16px; display: grid; gap: 12px; }
 .garden-preview .controls { display: flex; flex-wrap: wrap; gap: 12px; }
+.grow { transform-origin: 0 0; transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+.calm .grow { transition-duration: 150ms; }
+.lantern-glow { opacity: 0; transition: opacity 3s ease; }
+.phase-dusk .lantern-glow, .phase-night .lantern-glow { opacity: 1; }
+.firefly { opacity: 0; }
+.phase-dusk .firefly, .phase-night .firefly { opacity: 1; }

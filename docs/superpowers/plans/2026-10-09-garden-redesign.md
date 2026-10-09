@@ -3078,7 +3078,7 @@ export function ConnectedGarden({ size }: { size: 'compact' | 'large' }) {
 
 ```css
 .garden-scene.compact { aspect-ratio: 16 / 9; max-height: 260px; }
-.garden-scene.large { aspect-ratio: 4 / 5; max-height: 62vh; min-height: 280px; }
+.garden-scene.large { aspect-ratio: 6 / 5; max-height: 62vh; min-height: 280px; }
 .hero { cursor: pointer; }
 ```
 

@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { describeScene, type SceneState } from '../../domain/scene';
 import { Defs } from './Defs';
 import { CloudsLayer, SkyLayer } from './layers/SkyLayer';
+import { CreaturesLayer, ElementsLayer } from './layers/ElementsLayer';
 import { GroundLayer, HillsLayer, TintLayer } from './layers/LandLayer';
 import './garden.css';
 
@@ -27,6 +28,8 @@ export function GardenScene({ state, name }: Props) {
         <CloudsLayer />
         <HillsLayer />
         <GroundLayer />
+        <ElementsLayer state={state} />
+        <CreaturesLayer state={state} />
         <TintLayer />
       </svg>
     </div>
