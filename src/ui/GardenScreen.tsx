@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../state/store';
 import { CollectionList } from './garden/CollectionList';
+import { ConnectedGarden } from './garden/ConnectedGarden';
 
 export default function GardenScreen() {
   const name = useStore((s) => s.data.garden.name);
@@ -10,6 +11,7 @@ export default function GardenScreen() {
 
   return (
     <section className="stack">
+      <ConnectedGarden size="large" />
       <label>Tên khu vườn
         <input
           value={draft}

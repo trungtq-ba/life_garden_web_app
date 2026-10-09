@@ -156,3 +156,6 @@
 .nudge.unlock-pop { animation: pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .pulse-a .nudge.unlock-pop, .pulse-b .nudge.unlock-pop { animation: pop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .unlock-ring { transform-origin: 0 0; animation: ring 1s ease-out both; }
+.garden-scene.compact { aspect-ratio: 16 / 10; max-height: 340px; }
+.garden-scene.large { aspect-ratio: 6 / 5; max-height: 62vh; min-height: 280px; }
+.hero { cursor: pointer; }

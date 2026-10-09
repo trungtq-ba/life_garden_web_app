@@ -17,12 +17,15 @@ interface Props {
   name: string;
   wateredTick?: number;
   justUnlocked?: string[];
+  size?: 'compact' | 'large';
 }
 
-export function GardenScene({ state, name, wateredTick = 0, justUnlocked = [] }: Props) {
+export function GardenScene({ state, name, wateredTick = 0, justUnlocked = [], size }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const paused = useAmbientPause(ref);
-  const cls = ['garden-scene', `phase-${state.phase}`, `weather-${state.weather}`, state.calm ? 'calm' : ''].join(' ').trim();
+  const cls = ['garden-scene', `phase-${state.phase}`, `weather-${state.weather}`, state.calm ? 'calm' : '', size ?? '']
+    .filter(Boolean)
+    .join(' ');
   return (
     <div
       ref={ref}

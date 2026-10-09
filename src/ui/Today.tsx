@@ -4,6 +4,7 @@ import { dayPoints } from '../domain/scoring';
 import { ALL_HABITS, HABIT_LABEL, type Habit } from '../domain/types';
 import { isReminderDue } from '../notifications/reminders';
 import { useStore } from '../state/store';
+import { ConnectedGarden } from './garden/ConnectedGarden';
 
 function greeting(h: number) {
   return h < 11 ? 'Chào buổi sáng' : h < 18 ? 'Chào buổi chiều' : 'Chào buổi tối';
@@ -29,6 +30,10 @@ export default function Today({ date, onOpenGarden }: { date: string; onOpenGard
         <h1>{greeting(new Date().getHours())} 🌿</h1>
         <p className="note">{dateLabel}</p>
       </header>
+
+      <div className="hero" onClick={onOpenGarden}>
+        <ConnectedGarden size="compact" />
+      </div>
 
       {isReminderDue(new Date(), settings.reminderTime, tasks, settings.notificationsEnabled) && (
         <p role="status" className="card">Đến giờ chăm sóc khu vườn của bạn rồi, làm một việc nhỏ thôi cũng được 🌱</p>

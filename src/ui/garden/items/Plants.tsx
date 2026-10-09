@@ -106,3 +106,15 @@ export function CherryTree({ growth, seed }: ArtProps) {
     </g>
   );
 }
+
+export function Sprout({ seed }: ArtProps) {
+  return (
+    <g className="sway" style={sway(seed, 2.2)}>
+      <path d="M0 0 Q2 -18 0 -34" stroke="#3f9d5a" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      <path d="M0 -26 Q-26 -30 -30 -50 Q-8 -50 0 -26Z" fill="url(#leaf)" />
+      <path d="M0 -30 Q26 -34 30 -54 Q8 -54 0 -30Z" fill="url(#leaf-dark)" />
+      <path d="M0 -34 Q-12 -50 -2 -66 Q10 -52 0 -34Z" fill="url(#leaf)" />
+      <path d="M-22 -44 Q-14 -46 -8 -40" stroke="#ffffff" strokeWidth="1.6" fill="none" opacity="0.5" strokeLinecap="round" />
+    </g>
+  );
+}

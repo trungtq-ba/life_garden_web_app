@@ -3,6 +3,7 @@ import { dateKey } from '../domain/date';
 import { DEFAULT_PROFILE } from '../domain/types';
 import { ensurePermission } from '../notifications/reminders';
 import { useStore } from '../state/store';
+import { usePrefersReducedMotion } from './garden/useGardenScene';
 import { ProfileForm } from './ProfileForm';
 import { readFileText } from './readFile';
 
@@ -14,6 +15,8 @@ export default function SettingsScreen() {
   const [error, setError] = useState('');
   const [confirming, setConfirming] = useState(false);
   const [formVersion, setFormVersion] = useState(0);
+  const reduced = usePrefersReducedMotion();
+  const effective = reduced ? 'calm' : settings.gardenEffects ?? 'full';
 
   const download = () => {
     const url = URL.createObjectURL(new Blob([exportText()], { type: 'application/json' }));
@@ -51,6 +54,22 @@ export default function SettingsScreen() {
         <input type="checkbox" checked={settings.notificationsEnabled} onChange={(e) => toggleNotifications(e.target.checked)} />
         Bật thông báo nhắc nhở
       </label>
+      <fieldset>
+        <legend>Hiệu ứng khu vườn</legend>
+        {(['full', 'calm'] as const).map((v) => (
+          <label key={v} className="inline">
+            <input
+              type="radio"
+              name="garden-effects"
+              checked={effective === v}
+              disabled={reduced}
+              onChange={() => updateSettings({ gardenEffects: v })}
+            />
+            {v === 'full' ? 'Đầy đủ' : 'Nhẹ'}
+          </label>
+        ))}
+        {reduced && <p className="note">Thiết bị của bạn đang bật giảm chuyển động nên khu vườn luôn ở chế độ Nhẹ.</p>}
+      </fieldset>
       <p className="note">Nhắc nhở hoạt động tốt nhất khi ứng dụng được cài và đang mở nền. Khi bạn mở lại, ứng dụng vẫn nhắc nhẹ nhàng.</p>
       {msg && <p role="status">{msg}</p>}
 

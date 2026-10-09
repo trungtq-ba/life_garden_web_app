@@ -12,8 +12,13 @@ export interface GardenItem {
 }
 
 export const GARDEN_ITEMS: GardenItem[] = [
+  { id: 'sprout', name: 'Mầm non', kind: 'plant', unlockAt: 0, growSpan: 10,
+    slots: [{ x: 500, y: 470 }] },
   { id: 'grass', name: 'Cỏ xanh', kind: 'plant', unlockAt: 0, growSpan: 10,
-    slots: [{ x: 170, y: 540 }, { x: 300, y: 565 }, { x: 640, y: 570 }, { x: 840, y: 525 }] },
+    slots: [
+      { x: 170, y: 540 }, { x: 300, y: 565 }, { x: 640, y: 570 }, { x: 840, y: 525 },
+      { x: 410, y: 462 }, { x: 560, y: 445 }, { x: 790, y: 455 }, { x: 140, y: 480 },
+    ] },
   { id: 'daisy', name: 'Hoa cúc', kind: 'plant', unlockAt: 10, growSpan: 15,
     slots: [{ x: 190, y: 470 }, { x: 245, y: 485 }, { x: 215, y: 515 }] },
   { id: 'stone', name: 'Hòn đá', kind: 'decor', unlockAt: 10, growSpan: 0,

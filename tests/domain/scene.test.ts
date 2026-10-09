@@ -1,4 +1,5 @@
 import { addDays } from '../../src/domain/date';
+import { GARDEN_ITEMS } from '../../src/domain/growth';
 import {
   celestial, describeScene, resolveEffects, sceneState, skyPhase, todayRatio, weatherFor,
 } from '../../src/domain/scene';
@@ -122,7 +123,7 @@ describe('sceneState', () => {
     const s = sceneState({ ...base, peakPoints: 600, effects: 'calm' });
     expect(s.calm).toBe(true);
     expect(s.bloom).toBe(6);
-    expect(s.items).toHaveLength(11);
+    expect(s.items).toHaveLength(GARDEN_ITEMS.length);
   });
 });
 

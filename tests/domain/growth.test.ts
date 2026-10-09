@@ -28,8 +28,10 @@ describe('catalog', () => {
       }
     }
   });
-  it('always shows something at 0 points (grass is free)', () => {
-    expect(GARDEN_ITEMS.filter((i) => isUnlocked(i, 0)).map((i) => i.id)).toContain('grass');
+  it('always shows grass and a first sprout at 0 points', () => {
+    const ids = GARDEN_ITEMS.filter((i) => isUnlocked(i, 0)).map((i) => i.id);
+    expect(ids).toContain('grass');
+    expect(ids).toContain('sprout');
   });
 });
 

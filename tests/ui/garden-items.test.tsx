@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { sceneState } from '../../src/domain/scene';
-import { GARDEN_ITEMS } from '../../src/domain/growth';
+import { GARDEN_ITEMS, getItem } from '../../src/domain/growth';
 import { GardenScene } from '../../src/ui/garden/GardenScene';
 import { depthScale } from '../../src/ui/garden/layers/ElementsLayer';
 
@@ -22,7 +22,8 @@ describe('ElementsLayer', () => {
   // Review Focus 5
   it('is never empty at 0 points (grass and a seedling exist)', () => {
     const { container } = render(<GardenScene state={make(0)} name="v" />);
-    expect(count(container, 'grass')).toBe(4);
+    expect(count(container, 'grass')).toBe(getItem('grass')!.slots.length);
+    expect(count(container, 'sprout')).toBe(1);
     expect(count(container, 'daisy')).toBe(0);
   });
   it('adds items as points grow', () => {
