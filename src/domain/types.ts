@@ -47,20 +47,16 @@ export interface Settings {
   reminderTime: string; // 'HH:MM'
   notificationsEnabled: boolean;
   customTasks: TaskTemplate[];
+  gardenEffects: 'full' | 'calm' | null; // null = theo hệ thống
 }
 
-export interface PlacedItem {
-  cell: number;
-  itemId: string;
-}
 export interface Garden {
   name: string;
-  unlockedLevel: number;
-  placed: PlacedItem[];
+  peakPoints: number; // điểm cao nhất từng đạt; chỉ tăng
 }
 
 export interface AppData {
-  version: 1;
+  version: 2;
   profile: Profile | null; // null = chưa thiết lập → hiện màn chào mừng
   settings: Settings;
   days: Record<string, DayTask[]>;

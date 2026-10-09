@@ -25,8 +25,8 @@ button.primary { background: var(--accent); color: #fff; border-color: var(--acc
 progress { width: 100%; }
 .task { display: grid; gap: 8px; }
 .task.done .title { text-decoration: line-through; color: var(--muted); }
-.grid { display: grid; gap: 4px; }
-.cell { aspect-ratio: 1; padding: 0; display: grid; place-items: center; min-height: 0; }
-.cell[aria-pressed='true'] { outline: 3px solid var(--accent); }
 .bar { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
 .bar > div { flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-height: 2px; }
+.collection { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.collection li { padding: 8px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+.collection li.locked { color: var(--muted); border-style: dashed; }

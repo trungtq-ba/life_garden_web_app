@@ -44,13 +44,26 @@ describe('tasks and points', () => {
     s().toggleDone(D, id);
     expect(totalPoints(s().data.days)).toBe(0);
   });
-  it('keeps unlockedLevel after points are revoked', () => {
+  // Review Focus 2
+  it('keeps peakPoints after points are revoked and does not grow again on re-tick', () => {
     useStore.setState((st) => ({ data: { ...st.data, days: { ...st.data.days, '2026-10-01': [bigTask()] } } }));
     s().toggleDone('2026-10-01', 'big');
-    expect(s().data.garden.unlockedLevel).toBe(1);
+    expect(s().data.garden.peakPoints).toBe(10);
     s().toggleDone('2026-10-01', 'big');
     expect(totalPoints(s().data.days)).toBe(0);
-    expect(s().data.garden.unlockedLevel).toBe(1);
+    expect(s().data.garden.peakPoints).toBe(10);
+    s().toggleDone('2026-10-01', 'big');
+    expect(s().data.garden.peakPoints).toBe(10);
+  });
+  it('counts waterings only when a task becomes done', () => {
+    const id = s().data.days[D][0].id;
+    const before = s().wateredTick;
+    s().toggleDone(D, id);
+    expect(s().wateredTick).toBe(before + 1);
+    s().toggleDone(D, id); // bỏ tick
+    expect(s().wateredTick).toBe(before + 1);
+    s().skipTask(D, id);
+    expect(s().wateredTick).toBe(before + 1);
   });
   it('survives rapid ticking without drift', () => {
     const id = s().data.days[D][0].id;
@@ -84,16 +97,6 @@ describe('tasks and points', () => {
 });
 
 describe('garden actions', () => {
-  it('places an unlocked item and rejects a locked one with a reason', () => {
-    expect(s().placeItem('daisy', 0)).toEqual(expect.any(String));
-    useStore.setState((st) => ({ data: { ...st.data, garden: { ...st.data.garden, unlockedLevel: 1 } } }));
-    expect(s().placeItem('daisy', 0)).toBeNull();
-    expect(s().data.garden.placed).toEqual([{ cell: 0, itemId: 'daisy' }]);
-    s().moveItem(0, 4);
-    expect(s().data.garden.placed[0].cell).toBe(4);
-    s().removeItem(4);
-    expect(s().data.garden.placed).toHaveLength(0);
-  });
   it('renames the garden, trimming and rejecting empty names', () => {
     s().renameGarden('  Vườn Mai  ');
     expect(s().data.garden.name).toBe('Vườn Mai');
@@ -126,6 +129,17 @@ describe('import / export / reset', () => {
     expect(s().data.days[D]).toBe(useStore.getState().data.days[D]);
     expect(s().data.days[D].every((t) => t.status === 'pending')).toBe(true);
   });
+  // Review Focus 1
+  it('imports an old v1 export and upgrades it', () => {
+    const old = JSON.stringify({
+      version: 1, profile: DEFAULT_PROFILE,
+      settings: { habits: ['water'], reminderTime: '07:00', notificationsEnabled: false, customTasks: [] },
+      days: {}, garden: { name: 'Vườn cũ', unlockedLevel: 4, placed: [{ cell: 1, itemId: 'daisy' }] },
+    });
+    expect(s().importText(old)).toEqual({ ok: true });
+    expect(s().data.version).toBe(2);
+    expect(s().data.garden.peakPoints).toBe(70);
+  });
   // Review Focus 4
   it('rejects a bad file without overwriting current data', () => {
     s().updateSettings({ reminderTime: '07:30' });
@@ -150,6 +164,14 @@ describe('persistence', () => {
     const stop = startPersistence();
     s().renameGarden('Không được ghi');
     expect(localStorage.getItem(STORAGE_KEY)).toBe('{bad');
+    stop();
+  });
+  it('does not write to storage when only the watering tick changes', () => {
+    const stop = startPersistence();
+    const spy = vi.spyOn(Storage.prototype, 'setItem');
+    useStore.setState((st) => ({ wateredTick: st.wateredTick + 1 }));
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
     stop();
   });
   it('marks storage unavailable when saving fails', () => {

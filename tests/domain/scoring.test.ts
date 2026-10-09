@@ -1,16 +1,15 @@
 import { dayPoints, syncGarden, totalPoints } from '../../src/domain/scoring';
-import { levelForPoints } from '../../src/domain/garden';
 import type { AppData, DayTask } from '../../src/domain/types';
 
 const task = (id: string, points: number, status: DayTask['status']): DayTask => ({
   id, templateId: id, habit: 'walk', title: id, minutes: 5, points, status,
 });
-const data = (days: AppData['days'], unlockedLevel = 0): AppData => ({
-  version: 1,
+const data = (days: AppData['days'], peakPoints = 0): AppData => ({
+  version: 2,
   profile: null,
-  settings: { habits: [], reminderTime: '20:00', notificationsEnabled: false, customTasks: [] },
+  settings: { habits: [], reminderTime: '20:00', notificationsEnabled: false, customTasks: [], gardenEffects: null },
   days,
-  garden: { name: 'v', unlockedLevel, placed: [] },
+  garden: { name: 'v', peakPoints },
 });
 
 describe('scoring', () => {
@@ -20,19 +19,15 @@ describe('scoring', () => {
   it('sums across days and ignores empty/missed days', () => {
     expect(totalPoints({ '2026-10-01': [task('a', 3, 'done')], '2026-10-02': [], '2026-10-03': [task('b', 2, 'pending')] })).toBe(3);
   });
-  it('maps points to levels', () => {
-    expect(levelForPoints(0)).toBe(0);
-    expect(levelForPoints(9)).toBe(0);
-    expect(levelForPoints(10)).toBe(1);
-    expect(levelForPoints(25)).toBe(2);
-    expect(levelForPoints(10000)).toBe(7);
+  it('raises peakPoints to the current total when points grow', () => {
+    expect(syncGarden(data({ d: [task('a', 12, 'done')] })).garden.peakPoints).toBe(12);
   });
-  it('raises unlockedLevel when points grow', () => {
-    const next = syncGarden(data({ d: [task('a', 12, 'done')] }));
-    expect(next.garden.unlockedLevel).toBe(1);
+  // Review Focus 2
+  it('never lowers peakPoints when points drop', () => {
+    expect(syncGarden(data({ d: [task('a', 12, 'pending')] }, 30)).garden.peakPoints).toBe(30);
   });
-  it('never lowers unlockedLevel when points drop', () => {
-    const next = syncGarden(data({ d: [task('a', 12, 'pending')] }, 3));
-    expect(next.garden.unlockedLevel).toBe(3);
+  it('returns the same object when nothing changes', () => {
+    const d = data({ d: [task('a', 12, 'done')] }, 12);
+    expect(syncGarden(d)).toBe(d);
   });
 });

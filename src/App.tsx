@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ITEMS } from './domain/garden';
+import { GARDEN_ITEMS } from './domain/growth';
 import { useStore } from './state/store';
 import GardenScreen from './ui/GardenScreen';
 import ProgressScreen from './ui/ProgressScreen';
@@ -21,22 +21,21 @@ function Shell() {
   const [tab, setTab] = useState<Tab>('today');
   const today = useToday();
   const ensureDay = useStore((s) => s.ensureDay);
-  const level = useStore((s) => s.data.garden.unlockedLevel);
   const status = useStore((s) => s.storageStatus);
-  const prev = useRef(level);
+  const peak = useStore((s) => s.data.garden.peakPoints);
+  const prev = useRef(peak);
   const [toast, setToast] = useState('');
 
   useEffect(() => ensureDay(today), [today, ensureDay]);
   useEffect(() => {
-    if (level > prev.current) {
-      const names = ITEMS.filter((i) => i.level > prev.current && i.level <= level).map((i) => i.name);
-      setToast(`Bạn vừa mở khóa: ${names.join(', ')} 🎉`);
-      const id = setTimeout(() => setToast(''), 5000);
-      prev.current = level;
-      return () => clearTimeout(id);
-    }
-    prev.current = level;
-  }, [level]);
+    const before = prev.current;
+    prev.current = peak;
+    const names = GARDEN_ITEMS.filter((i) => i.unlockAt > before && i.unlockAt <= peak).map((i) => i.name);
+    if (names.length === 0) return;
+    setToast(`Bạn vừa mở khóa: ${names.join(', ')} 🎉`);
+    const id = setTimeout(() => setToast(''), 5000);
+    return () => clearTimeout(id);
+  }, [peak]);
 
   return (
     <div className="shell">

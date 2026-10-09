@@ -5,53 +5,33 @@ import { emptyData } from '../../src/state/storage';
 import { useStore } from '../../src/state/store';
 import GardenScreen from '../../src/ui/GardenScreen';
 
-const seed = (unlockedLevel: number, placed: { cell: number; itemId: string }[] = []) =>
+const seed = (peakPoints: number, name = 'Vườn thử') =>
   useStore.setState({
-    data: { ...emptyData(), profile: DEFAULT_PROFILE, garden: { name: 'Vườn thử', unlockedLevel, placed } },
+    data: { ...emptyData(), profile: DEFAULT_PROFILE, garden: { name, peakPoints } },
     storageStatus: 'ok',
   });
 
 describe('GardenScreen', () => {
-  it('renders a 6x6 grid at level 0 and shows the garden name', () => {
+  it('shows the garden name and the collection list', () => {
     seed(0);
     render(<GardenScreen />);
-    expect(screen.getAllByRole('button', { name: /^Ô \d+/ })).toHaveLength(36);
     expect(screen.getByDisplayValue('Vườn thử')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Trong vườn của bạn' })).toBeInTheDocument();
+    expect(screen.getByText('Cỏ xanh · mới gieo (0%)')).toBeInTheDocument();
   });
 
-  it('places an unlocked item in a selected empty cell', async () => {
-    seed(1);
-    render(<GardenScreen />);
-    await userEvent.click(screen.getByRole('button', { name: 'Ô 1' }));
-    await userEvent.click(screen.getByRole('button', { name: 'Đặt Hoa cúc' }));
-    expect(useStore.getState().data.garden.placed).toEqual([{ cell: 0, itemId: 'daisy' }]);
-  });
-
-  it('does not offer locked items', async () => {
+  it('shows locked items as silhouettes with the points still needed', () => {
     seed(0);
     render(<GardenScreen />);
-    await userEvent.click(screen.getByRole('button', { name: 'Ô 1' }));
-    expect(screen.queryByRole('button', { name: 'Đặt Hoa cúc' })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Đặt Cỏ xanh' })).toBeInTheDocument();
+    expect(screen.getByText('Hoa cúc · còn 10 điểm')).toBeInTheDocument();
+    expect(screen.getByText('Cây cầu nhỏ · còn 190 điểm')).toBeInTheDocument();
   });
 
-  it('disables an item that reached its max count', async () => {
-    seed(5, [{ cell: 0, itemId: 'pond' }]);
+  it('shows growth stages for unlocked items', () => {
+    seed(50);
     render(<GardenScreen />);
-    await userEvent.click(screen.getByRole('button', { name: /^Ô 2(:|$)/ }));
-    expect(screen.getByRole('button', { name: 'Đặt Hồ nước' })).toBeDisabled();
-  });
-
-  it('removes and moves a placed item', async () => {
-    seed(1, [{ cell: 0, itemId: 'daisy' }]);
-    render(<GardenScreen />);
-    await userEvent.click(screen.getByRole('button', { name: /^Ô 1(:|$)/ }));
-    await userEvent.click(screen.getByRole('button', { name: 'Di chuyển' }));
-    await userEvent.click(screen.getByRole('button', { name: /^Ô 3(:|$)/ }));
-    expect(useStore.getState().data.garden.placed).toEqual([{ cell: 2, itemId: 'daisy' }]);
-    await userEvent.click(screen.getByRole('button', { name: /^Ô 3(:|$)/ }));
-    await userEvent.click(screen.getByRole('button', { name: 'Gỡ' }));
-    expect(useStore.getState().data.garden.placed).toHaveLength(0);
+    expect(screen.getByText('Hoa cúc · đã trưởng thành')).toBeInTheDocument();
+    expect(screen.getByText('Hướng dương · mới gieo (20%)')).toBeInTheDocument();
   });
 
   it('renames the garden on blur', async () => {
@@ -64,9 +44,13 @@ describe('GardenScreen', () => {
     expect(useStore.getState().data.garden.name).toBe('Vườn Mai');
   });
 
-  it('hints at the next unlock', () => {
+  it('restores the old name when the field is left blank', async () => {
     seed(0);
     render(<GardenScreen />);
-    expect(screen.getByText(/Sắp mở khóa: Hoa cúc \(còn 10 điểm\)/)).toBeInTheDocument();
+    const input = screen.getByLabelText('Tên khu vườn');
+    await userEvent.clear(input);
+    await userEvent.tab();
+    expect(useStore.getState().data.garden.name).toBe('Vườn thử');
+    expect(input).toHaveValue('Vườn thử');
   });
 });

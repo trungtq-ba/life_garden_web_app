@@ -16,14 +16,13 @@ test('onboard, complete a task, see progress, and keep data after reload', async
   await expect(page.getByText(/Tuần này: 1\/\d+ nhiệm vụ/)).toBeVisible();
 
   await page.getByRole('button', { name: 'Khu vườn', exact: true }).click();
-  await page.getByRole('button', { name: 'Ô 1', exact: true }).click();
-  await page.getByRole('button', { name: 'Đặt Cỏ xanh' }).click();
-  await expect(page.getByRole('button', { name: 'Ô 1: Cỏ xanh' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Trong vườn của bạn' })).toBeVisible();
+  await expect(page.getByText(/^Hoa cúc · còn \d+ điểm$/)).toBeVisible();
 
   await page.reload();
   await expect(page.getByRole('navigation', { name: 'Điều hướng chính' })).toBeVisible();
   await page.getByRole('button', { name: 'Khu vườn', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Ô 1: Cỏ xanh' })).toBeVisible();
+  await expect(page.getByText(/^Cỏ xanh · /)).toBeVisible();
   await page.getByRole('button', { name: 'Hôm nay' }).click();
   await expect(page.getByText(/^1\/\d+ nhiệm vụ$/)).toBeVisible();
 });

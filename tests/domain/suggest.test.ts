@@ -7,6 +7,7 @@ const settings = (over: Partial<Settings> = {}): Settings => ({
   reminderTime: '20:00',
   notificationsEnabled: false,
   customTasks: [],
+  gardenEffects: null,
   ...over,
 });
 const busy: Profile = { ...DEFAULT_PROFILE, activity: 'high', minutesPerDay: 60 };

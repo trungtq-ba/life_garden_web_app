@@ -1,4 +1,3 @@
-import { levelForPoints } from './garden';
 import type { AppData, DayTask } from './types';
 
 export const dayPoints = (tasks: DayTask[]): number =>
@@ -7,10 +6,10 @@ export const dayPoints = (tasks: DayTask[]): number =>
 export const totalPoints = (days: Record<string, DayTask[]>): number =>
   Object.values(days).reduce((s, tasks) => s + dayPoints(tasks), 0);
 
-/** Nâng unlockedLevel nếu điểm đạt ngưỡng mới; không bao giờ hạ. */
+/** Nâng peakPoints lên điểm hiện có nếu cao hơn; không bao giờ hạ. */
 export function syncGarden(data: AppData): AppData {
-  const level = levelForPoints(totalPoints(data.days));
-  return level > data.garden.unlockedLevel
-    ? { ...data, garden: { ...data.garden, unlockedLevel: level } }
+  const total = totalPoints(data.days);
+  return total > data.garden.peakPoints
+    ? { ...data, garden: { ...data.garden, peakPoints: total } }
     : data;
 }

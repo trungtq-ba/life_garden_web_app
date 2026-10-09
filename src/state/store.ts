@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { dateKey } from '../domain/date';
-import { canPlace, moveItem as moveInGarden, placeItem as placeInGarden, removeAt } from '../domain/garden';
 import { syncGarden } from '../domain/scoring';
 import { suggestTasks, swapTask } from '../domain/suggest';
 import {
@@ -11,6 +10,7 @@ import { emptyData, loadData, parseData, saveData, type LoadStatus } from './sto
 interface State {
   data: AppData;
   storageStatus: LoadStatus;
+  wateredTick: number;
   completeSetup(profile: Profile, settings: Partial<Settings>): void;
   updateProfile(patch: Partial<Profile>): void;
   updateSettings(patch: Partial<Settings>): void;
@@ -19,9 +19,6 @@ interface State {
   skipTask(date: string, taskId: string): void;
   swap(date: string, taskId: string): boolean;
   addCustomTask(date: string, input: { title: string; minutes: number; habit: Habit }): boolean;
-  placeItem(itemId: string, cell: number): string | null;
-  removeItem(cell: number): void;
-  moveItem(from: number, to: number): void;
   renameGarden(name: string): void;
   exportText(): string;
   importText(text: string): { ok: boolean; error?: string };
@@ -43,6 +40,7 @@ export const useStore = create<State>()((set, get) => {
   return {
     data: loaded.data,
     storageStatus: loaded.status,
+    wateredTick: 0,
 
     completeSetup: (profile, settings) => {
       const { data } = get();
@@ -70,11 +68,15 @@ export const useStore = create<State>()((set, get) => {
       commit({ ...data, days: { ...data.days, [date]: tasks } });
     },
 
-    toggleDone: (date, id) =>
+    toggleDone: (date, id) => {
+      const status = () => get().data.days[date]?.find((t) => t.id === id)?.status;
+      const before = status();
       mapTask(date, id, (t) =>
         t.status === 'done' ? { ...t, status: 'pending' }
         : t.status === 'pending' || t.status === 'skipped' ? { ...t, status: 'done' }
-        : t),
+        : t);
+      if (status() === 'done' && before !== 'done') set((s) => ({ wateredTick: s.wateredTick + 1 }));
+    },
     skipTask: (date, id) =>
       mapTask(date, id, (t) =>
         t.status === 'pending' ? { ...t, status: 'skipped' }
@@ -108,21 +110,6 @@ export const useStore = create<State>()((set, get) => {
       return true;
     },
 
-    placeItem: (itemId, cell) => {
-      const { data } = get();
-      const check = canPlace(data.garden, itemId, cell);
-      if (!check.ok) return check.reason;
-      commit({ ...data, garden: placeInGarden(data.garden, itemId, cell) });
-      return null;
-    },
-    removeItem: (cell) => {
-      const { data } = get();
-      commit({ ...data, garden: removeAt(data.garden, cell) });
-    },
-    moveItem: (from, to) => {
-      const { data } = get();
-      commit({ ...data, garden: moveInGarden(data.garden, from, to) });
-    },
     renameGarden: (name) => {
       const trimmed = name.trim();
       if (!trimmed) return;
