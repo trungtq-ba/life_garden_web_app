@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../state/store';
+import { readFileText } from './readFile';
 
 export default function Recovery() {
   const importText = useStore((s) => s.importText);
@@ -16,8 +17,12 @@ export default function Recovery() {
           onChange={async (e) => {
             const file = e.target.files?.[0];
             if (!file) return;
-            const r = importText(await file.text());
-            if (!r.ok) setMsg(r.error ?? '');
+            try {
+              const r = importText(await readFileText(file));
+              if (!r.ok) setMsg(r.error ?? '');
+            } catch {
+              setMsg('Tệp không hợp lệ nên chưa thay đổi gì.');
+            }
           }}
         />
       </label>
