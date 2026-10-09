@@ -2,6 +2,8 @@
 
 Ngày: 2026-10-09 · Trạng thái: chờ duyệt
 
+> **Cập nhật:** mục 4 (`garden`, mức mở khóa) và mục 6 (Khu vườn) đã được thay thế bởi `2026-10-09-garden-redesign-design.md` (khu vườn tự phát triển, schema v2).
+
 ## 1. Mục đích và tiêu chí thành công
 
 Life Garden là web app giúp người dùng xây thói quen sống khỏe. Mỗi ngày người dùng hoàn thành vài nhiệm vụ nhỏ (uống nước, đi bộ, vận động, ngủ đúng giờ) và khu vườn ảo của họ phát triển. App nhẹ nhàng, dễ duy trì, **không trách móc hay phạt** khi bỏ lỡ một ngày.
