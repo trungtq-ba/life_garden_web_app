@@ -29,5 +29,6 @@ export default defineConfig({
     globals: true,
     setupFiles: ['tests/setup.ts'],
     include: ['tests/**/*.test.{ts,tsx}'],
+    css: { include: [/garden\.css/] }, // để test đọc được nội dung garden.css bằng ?raw
   },
 });

@@ -44,3 +44,82 @@
 .rainbow[data-visible='true'] { opacity: 0.6; }
 .lantern-halo { opacity: 0; transition: opacity 3s ease; }
 .phase-dusk .lantern-halo, .phase-night .lantern-halo { opacity: 1; }
+
+/* ----- Chuyển động nền: chỉ transform và opacity ----- */
+.garden-scene {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-sway: 4s;
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(calc(var(--amp, 1.5) * -1)); }
+  50% { transform: rotate(var(--amp, 1.5)); }
+}
+@keyframes drift {
+  from { transform: translateX(-160px); }
+  to { transform: translateX(1160px); }
+}
+@keyframes flutter {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(var(--x1), var(--y1)); }
+  50% { transform: translate(var(--x2), var(--y2)); }
+  75% { transform: translate(var(--x3), var(--y3)); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes flap {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0.35); }
+}
+@keyframes fly {
+  from { transform: translateX(-60px); }
+  to { transform: translateX(1060px); }
+}
+@keyframes circle {
+  0%, 100% { transform: translate(var(--rx, 40px), 0); }
+  25% { transform: translate(0, var(--ry, 12px)); }
+  50% { transform: translate(calc(var(--rx, 40px) * -1), 0); }
+  75% { transform: translate(0, calc(var(--ry, 12px) * -1)); }
+}
+@keyframes glow {
+  0%, 100% { opacity: 0.2; transform: translate(0, 0); }
+  50% { opacity: 1; transform: translate(14px, -10px); }
+}
+@keyframes rain {
+  from { transform: translate(0, -40px); }
+  to { transform: translate(-30px, 640px); }
+}
+@keyframes mist-drift {
+  from { transform: translateX(-30px); }
+  to { transform: translateX(30px); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.sway { transform-origin: 0 0; animation: sway var(--dur-sway) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.cloud-drift { animation: drift var(--dur, 110s) linear infinite; animation-delay: var(--delay, 0s); }
+.butterfly { animation: flutter 16s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.wings { transform-origin: 0 0; animation: flap 0.35s ease-in-out infinite alternate; }
+.bird { animation: fly var(--dur, 34s) linear infinite; animation-delay: var(--delay, 0s); }
+.fish { animation: circle var(--dur, 12s) ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.firefly { animation: glow 5s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+.raindrop { animation: rain var(--dur, 1.1s) linear infinite; animation-delay: var(--delay, 0s); }
+.mist { animation: mist-drift 20s ease-in-out infinite alternate; animation-delay: var(--delay, 0s); }
+.sun-rays { animation: spin 90s linear infinite; }
+.lantern-halo, .sun > circle:first-child { transform-origin: 0 0; animation: breathe 8s ease-in-out infinite; }
+.star { animation: twinkle 4s ease-in-out infinite; animation-delay: var(--delay, 0s); }
+
+/* Giảm chuyển động: chế độ Nhẹ và cài đặt hệ thống */
+.calm * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .garden-scene * { animation: none !important; transition-duration: 150ms !important; }
+}
+/* Tạm dừng khi tab ẩn hoặc cảnh ngoài khung nhìn */
+.garden-scene[data-paused='true'] * { animation-play-state: paused !important; }

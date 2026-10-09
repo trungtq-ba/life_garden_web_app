@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useRef, type CSSProperties } from 'react';
 import { describeScene, type SceneState } from '../../domain/scene';
 import { Defs } from './Defs';
 import { CloudsLayer, SkyLayer } from './layers/SkyLayer';
@@ -8,6 +8,7 @@ import { GroundLayer, HillsLayer, TintLayer } from './layers/LandLayer';
 import { LightLayer } from './layers/LightLayer';
 import { RainbowLayer } from './layers/RainbowLayer';
 import { WeatherLayer } from './layers/WeatherLayer';
+import { useAmbientPause } from './useAmbientPause';
 import './garden.css';
 
 interface Props {
@@ -17,13 +18,17 @@ interface Props {
 }
 
 export function GardenScene({ state, name }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const paused = useAmbientPause(ref);
   const cls = ['garden-scene', `phase-${state.phase}`, `weather-${state.weather}`, state.calm ? 'calm' : ''].join(' ').trim();
   return (
     <div
+      ref={ref}
       className={cls}
       role="img"
       aria-label={describeScene(state, name)}
       data-testid="garden-scene"
+      data-paused={paused}
       style={{ '--sun': state.sunIntensity } as CSSProperties}
     >
       <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
