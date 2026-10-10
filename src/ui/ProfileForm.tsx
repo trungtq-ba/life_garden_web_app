@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { normalizeName } from '../domain/greeting';
 import { ALL_HABITS, HABIT_LABEL, type Habit, type Profile } from '../domain/types';
 
 export interface FormValue {
@@ -27,12 +28,15 @@ export function ProfileForm({ initial, submitLabel, onSubmit, children }: Props)
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit({
-          profile: { ...p, minutesPerDay: Math.max(5, p.minutesPerDay || 30) },
+          profile: { ...p, fullName: normalizeName(p.fullName), minutesPerDay: Math.max(5, p.minutesPerDay || 30) },
           habits,
           reminderTime: time,
         });
       }}
     >
+      <label>Họ và tên
+        <input type="text" maxLength={60} autoComplete="name" value={p.fullName ?? ''} onChange={(e) => setP({ ...p, fullName: e.target.value })} />
+      </label>
       <label>Cân nặng (kg)
         <input type="number" min="0" value={p.weightKg ?? ''} onChange={(e) => setP({ ...p, weightKg: num(e.target.value) })} />
       </label>

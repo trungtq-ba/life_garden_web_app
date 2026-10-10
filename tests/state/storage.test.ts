@@ -17,6 +17,18 @@ const v1 = (over: Record<string, unknown> = {}) => ({
 });
 const withDay = (t: unknown) => JSON.stringify({ ...emptyData(), days: { '2026-10-09': [t] } });
 
+describe('profile fullName', () => {
+  const base = { goal: 'general', activity: 'low', minutesPerDay: 30 };
+  const withProfile = (profile: unknown) => JSON.stringify({ ...emptyData(), profile });
+  it('accepts a string name and old profiles without one', () => {
+    expect(parseData(withProfile({ ...base, fullName: 'Lan' })).profile?.fullName).toBe('Lan');
+    expect(parseData(withProfile(base)).profile?.fullName).toBeUndefined();
+  });
+  it('rejects a non-string name', () => {
+    expect(() => parseData(withProfile({ ...base, fullName: 42 }))).toThrow();
+  });
+});
+
 describe('parseData v2', () => {
   it('round-trips valid data', () => {
     const d = emptyData();

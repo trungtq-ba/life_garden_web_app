@@ -50,6 +50,16 @@ describe('SettingsScreen', () => {
     expect(settings.reminderTime).toBe('07:30');
   });
 
+  it('saves a tidy full name and clears it when emptied', async () => {
+    render(<SettingsScreen />);
+    await userEvent.type(screen.getByLabelText('Họ và tên'), '  Nguyễn   Thị Lan ');
+    await userEvent.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
+    expect(useStore.getState().data.profile?.fullName).toBe('Nguyễn Thị Lan');
+    await userEvent.clear(screen.getByLabelText('Họ và tên'));
+    await userEvent.click(screen.getByRole('button', { name: 'Lưu thay đổi' }));
+    expect(useStore.getState().data.profile?.fullName).toBeUndefined();
+  });
+
   it('toggles notifications even if permission is unsupported (in-app reminders still work)', async () => {
     render(<SettingsScreen />);
     await userEvent.click(screen.getByLabelText('Bật thông báo nhắc nhở'));

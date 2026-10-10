@@ -21,6 +21,21 @@ beforeEach(() => {
   });
 });
 
+describe('Today greeting', () => {
+  afterEach(() => vi.useRealTimers());
+  it('addresses the user by title and capitalised name', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date(2026, 9, 9, 8, 0) });
+    useStore.setState((s) => ({ data: { ...s.data, profile: { ...DEFAULT_PROFILE, gender: 'female', fullName: 'Nguyễn Thị Lan' } } }));
+    render(<Today date={D} onOpenGarden={() => {}} />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Chào buổi sáng, chị NGUYỄN THỊ LAN');
+  });
+  it('keeps the plain greeting when no name is set', () => {
+    vi.useFakeTimers({ toFake: ['Date'], now: new Date(2026, 9, 9, 12, 0) });
+    render(<Today date={D} onOpenGarden={() => {}} />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/^Chào buổi trưa 🌿$/);
+  });
+});
+
 describe('Today', () => {
   it('shows tasks and progress', () => {
     render(<Today date={D} onOpenGarden={() => {}} />);

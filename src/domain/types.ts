@@ -13,6 +13,7 @@ export type Gender = 'female' | 'male' | 'other';
 export type TaskStatus = 'pending' | 'done' | 'swapped' | 'skipped';
 
 export interface Profile {
+  fullName?: string;
   weightKg?: number;
   heightCm?: number;
   age?: number;

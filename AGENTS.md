@@ -46,6 +46,7 @@ src/
     suggest.ts     # suggestTasks(), swapTask()
     growth.ts      # GARDEN_ITEMS, growthOf, creatureCounts, bloomDensity, nextUnlock
     scene.ts       # skyPhase, weatherFor, sceneState, describeScene, estimateAnimated
+clea    greeting.ts    # greetingText, normalizeName
     scoring.ts     # dayPoints, totalPoints, syncGarden
     progress.ts    # weeklySummary, habitCounts, milestones, historyDays
   state/
@@ -64,7 +65,7 @@ e2e/               # Playwright
 
 ## 5. Mô hình dữ liệu (`AppData`, `version: 2`)
 
-- `profile`: cân nặng, chiều cao, tuổi, giới tính, mục tiêu, mức vận động, phút rảnh/ngày. `null` nghĩa là chưa thiết lập (hiện Welcome). "Bỏ qua" tạo `DEFAULT_PROFILE`.
+- `profile`: họ tên đầy đủ (tùy chọn, `fullName`, dùng cho lời chào ở màn Hôm nay: anh/chị theo giới tính + tên viết hoa), cân nặng, chiều cao, tuổi, giới tính, mục tiêu, mức vận động, phút rảnh/ngày. `null` nghĩa là chưa thiết lập (hiện Welcome). "Bỏ qua" tạo `DEFAULT_PROFILE`.
 - `settings`: thói quen đã chọn (rỗng = tất cả), giờ nhắc `HH:MM`, bật/tắt thông báo, nhiệm vụ tự tạo.
 - `days`: khóa `YYYY-MM-DD` (giờ địa phương) → danh sách nhiệm vụ với trạng thái `pending | done | swapped | skipped`. Giữ vô thời hạn.
 - `garden`: tên vườn và `peakPoints` (điểm cao nhất từng đạt, chỉ tăng). Dữ liệu và tệp xuất v1 được di trú tự động (`migrateToV2`).

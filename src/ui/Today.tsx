@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import { parseKey } from '../domain/date';
+import { greetingText } from '../domain/greeting';
 import { dayPoints } from '../domain/scoring';
 import { ALL_HABITS, HABIT_LABEL, type Habit } from '../domain/types';
 import { isReminderDue } from '../notifications/reminders';
 import { useStore } from '../state/store';
 import { ConnectedGarden } from './garden/ConnectedGarden';
 
-function greeting(h: number) {
-  return h < 11 ? 'Chào buổi sáng' : h < 18 ? 'Chào buổi chiều' : 'Chào buổi tối';
-}
-
 export default function Today({ date, onOpenGarden }: { date: string; onOpenGarden(): void }) {
   const tasks = useStore((s) => s.data.days[date]);
   const settings = useStore((s) => s.data.settings);
+  const profile = useStore((s) => s.data.profile);
   const { toggleDone, skipTask, swap, addCustomTask } = useStore.getState();
   const [title, setTitle] = useState('');
   const [minutes, setMinutes] = useState('10');
@@ -27,7 +25,7 @@ export default function Today({ date, onOpenGarden }: { date: string; onOpenGard
   return (
     <section className="stack">
       <header>
-        <h1>{greeting(new Date().getHours())} 🌿</h1>
+        <h1>{greetingText(new Date().getHours(), profile)} 🌿</h1>
         <p className="note">{dateLabel}</p>
       </header>
 

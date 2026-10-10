@@ -33,7 +33,9 @@ const validPlacedV1 = (p: unknown) => isObj(p) && Number.isInteger(p.cell) && is
 
 function checkCommon(raw: Record<string, unknown>) {
   const { profile, settings, days } = raw;
-  if (profile !== null && !isObj(profile)) throw new Error('Hồ sơ không hợp lệ');
+  if (profile !== null && (!isObj(profile) || (profile.fullName !== undefined && typeof profile.fullName !== 'string'))) {
+    throw new Error('Hồ sơ không hợp lệ');
+  }
   if (!isObj(settings) || !Array.isArray(settings.habits) || !Array.isArray(settings.customTasks)
     || typeof settings.reminderTime !== 'string' || typeof settings.notificationsEnabled !== 'boolean'
     || !settings.habits.every(isHabit) || !settings.customTasks.every(validTemplate)) {

@@ -6,11 +6,11 @@ import ProgressScreen from './ui/ProgressScreen';
 import Recovery from './ui/Recovery';
 import SettingsScreen from './ui/SettingsScreen';
 import Today from './ui/Today';
+import { TabIcon, type TabId } from './ui/TabIcons';
 import { useToday } from './ui/useToday';
 import Welcome from './ui/Welcome';
 
-type Tab = 'today' | 'garden' | 'progress' | 'settings';
-const TABS: [Tab, string][] = [
+const TABS: [TabId, string][] = [
   ['today', 'Hôm nay'],
   ['garden', 'Khu vườn'],
   ['progress', 'Tiến độ'],
@@ -18,7 +18,7 @@ const TABS: [Tab, string][] = [
 ];
 
 function Shell() {
-  const [tab, setTab] = useState<Tab>('today');
+  const [tab, setTab] = useState<TabId>('today');
   const today = useToday();
   const ensureDay = useStore((s) => s.ensureDay);
   const status = useStore((s) => s.storageStatus);
@@ -52,7 +52,8 @@ function Shell() {
       <nav className="tabs" aria-label="Điều hướng chính">
         {TABS.map(([id, label]) => (
           <button key={id} aria-current={tab === id ? 'page' : undefined} onClick={() => setTab(id)}>
-            {label}
+            <TabIcon id={id} />
+            <span>{label}</span>
           </button>
         ))}
       </nav>
