@@ -54,6 +54,12 @@ importers:
       vitest:
         specifier: ^2.1.2
         version: 2.1.9(jsdom@25.0.1)(terser@5.51.2)
+      workbox-build:
+        specifier: ^7.4.1
+        version: 7.4.1(@types/babel__core@7.20.5)
+      workbox-window:
+        specifier: ^7.4.1
+        version: 7.4.1
 
 packages:
 
